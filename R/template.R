@@ -17,6 +17,7 @@
 #' template("creator")
 template <- function(object){
   properties <- gsub("^(@|#)", "", eml_db[[eml_version()]][[object]])
+  properties <- subset(properties, properties != "xml:lang")
 
   output <- vector("list", length(properties))
   names(output) <- properties
@@ -28,7 +29,7 @@ template <- function(object){
     vapply(properties,
            function(x){
              properties <- eml_db[[eml_version()]][[x]]
-             drop <-  grep("^(@|#)\\w+",  properties)
+             drop <-  grep("^(@|#)\\w+|^xml:",  properties)
              if(length(drop) > 0 ) properties <- properties[-drop]
              length(properties)
            },
